@@ -19,7 +19,8 @@
 }
 
 @{
-    var cpfquery = Request.QueryString["id2"];
+    var cpfquery = Request.QueryString["id"];
+
     if (IsPost && Validation.IsValid())
     {
         var dbV = WebMatrix.Data.Database.Open("dbBancoPIM");
@@ -45,16 +46,16 @@
 <h3 class="text-primary">Matrícula da Criança</h3>
 
 <!--Dados da Crianca-->
-<form method="post" action="">
+<form method="post" action="~/DAL/CriancaDAL/CadastroCriancaDAL.cshtml">
     <h4 class="text-info">Dados da Criança</h4>
     <div class="row">
     </div>
-    <input type="text" value="@cpfquery" />
+    <input type="text" value="@cpfquery" name="textCpf" />
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
                 <label for="textNome">Nome: </label>
-                <input type="text" name="textNome" id="nome" placeholder="Nome..." class="form-control" />
+                <input type="text" name="textNome" id="nome" placeholder="Nome..." class="form-control" required/>
                 @Html.ValidationMessage("textNome")
             </div>
         </div>

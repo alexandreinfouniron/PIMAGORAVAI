@@ -125,7 +125,7 @@
     <div class="modal-footer">
         <div class="row">
             <div class="text-left col-md-6">
-                <button class="btn btn-success btnAddCrianca" data-cpf="@r.cpfResp"><span class="glyphicon glyphicon-plus"></span> Adicionar Criança</button>
+                <a href="~/Views/Responsavel/addCriancaResponsavel.cshtml?id=@r.cpfResp" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Adicionar Criança</a>
             </div>
             <div class="text-right col-md-6">
                 <button type="button" class="btn btn-default" data-dismiss="modal"> Sair </button>
@@ -145,13 +145,6 @@
             $('#tel1').mask("(00)00000-0000");
             $('#tel2').mask("(00)00000-0000");
         });
-
-        $(document).ready(function () {
-            var id = $(this).data("cpf");
-            $(".btnAddCrianca").click(function () {
-                $("#conteudoModal").load("/Views/Responsavel/addCriancaResponsavel.cshtml?cpf=" + id)        
-            });
-     });
 
     </script>
 }
