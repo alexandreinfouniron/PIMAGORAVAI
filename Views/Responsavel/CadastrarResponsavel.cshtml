@@ -20,12 +20,14 @@
         DateTime dataNascimento = Request.Form["dtNascimento"].AsDateTime();
         string sexo = Request.Form["opRadio"];
         string endereco = Request.Form["textEndereco"];
+        string bairro = Request.Form["txtBairro"];
+        int numero = Request.Form["numero"].AsInt();
         string tel1 = Request.Form["tel1"];
         string tel2 = Request.Form["tel2"];
         string email = Request.Form["email"];
 
         <!--Pesquisar sobre validação de formulario-->
-        db.Execute("INSERT INTO Responsavel (cpf, nome, dataNascimento, sexo, endereco, telefone1, telefone2, email) VALUES(@0, @1, @2, @3, @4, @5, @6, @7)", cpf, nome, dataNascimento, sexo, endereco, tel1, tel2, email);
+        db.Execute("INSERT INTO Responsavel (cpf, nome, dataNascimento, sexo, endereco, bairro, numero, telefone1, telefone2, email) VALUES(@0, @1, @2, @3, @4, @5, @6, @7,@8, @9)", cpf, nome, dataNascimento, sexo, endereco, bairro, numero, tel1, tel2, email);
 
         db.Close();
 
@@ -44,7 +46,7 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="texCpf">CPF: </label>
-                        <input type="text" id="cpf" name="textCpf" class="form-control" placeholder="Digite o CPF" />
+                        <input type="text" id="cpf" name="textCpf" class="form-control" placeholder="000.000.000-00" />
                         @Html.ValidationMessage("textCpf")
                     </div>
                 </div>
@@ -76,11 +78,24 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="textEndereco">Endereço: </label>
-                        <input type="text" name="textEndereco" class="form-control" placeholder="Digite o Seu Endereço" />
-                        @Html.ValidationMessage("textEndereco")
+                        <input type="text" name="textEndereco" placeholder="Rua, Avenida, Via... " class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtNum">Nº: </label>
+                        <input type="number" name="numero" class="form-control" placeholder="0000" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtBairro">Bairro: </label>
+                        <input type="text" name="txtBairro" class="form-control" placeholder="Bairro..." />
                     </div>
                 </div>
             </div>

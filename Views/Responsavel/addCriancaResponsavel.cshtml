@@ -18,6 +18,7 @@
 
         <!--Pesquisar sobre validação de formulario-->
     var r = db.QuerySingle("SELECT*FROM Responsavel WHERE cpf = @0", cpf);
+
     var c = db.Query(@"SELECT c.nome 'nomeCrianca', c.idMatricula 'matricula'
                     FROM Crianca c inner join Responsavel r
                     ON c.idResponsavel = r.id

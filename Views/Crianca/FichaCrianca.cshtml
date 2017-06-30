@@ -2,13 +2,12 @@
     var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
     var idCrianca = Request.QueryString["matricula"];
-    bool fichaVal = Request.QueryString["fichaVal"].AsBool();
     if (idCrianca == null)
     {
         Response.Redirect("~/Index.cshtml");
     }
 
-    var c = db.QuerySingle(@"select c.idMatricula 'Matricula', r.cpf 'cpfResponsavel', c.dtNascimento 'dtNasc', c.dtMatricula 'dtMatricula', r.nome 'nomeResp', c.nome 'nomeCrianca', s.nome 'nomeSala', s.idSala 'idSala', c.idTurma 'idTurma', t.periodo 'nomePeriodo', c.sexo 'sexo', c.Observacoes 'obs'
+    var c = db.QuerySingle(@"select c.idMatricula 'Matricula', r.id 'idResponsavel', c.dtNascimento 'dtNasc', c.dtMatricula 'dtMatricula', r.nome 'nomeResp', c.nome 'nomeCrianca', s.nome 'nomeSala', s.idSala 'idSala', c.idTurma 'idTurma', t.periodo 'nomePeriodo', c.sexo 'sexo', c.Observacoes 'obs'
                              from Crianca c left join Responsavel r
                              on c.idResponsavel = r.id left join Sala s
                              on c.idSala = s.idSala left join Turma t
@@ -31,7 +30,7 @@
 <!--Dados da Crianca-->
 <form method="post" action="~/DAL/CriancaDAL/EditarCrianca.cshtml">
 
-     <input type="hidden" value="@c.cpfResponsavel" name="textCpfResp" />
+     <input type="hidden" value="@c.idResponsavel" name="txtId" />
     <input type="hidden" value="@c.Matricula" name="textMatricula" />
     <div class="row">
         <div class="col-md-12">

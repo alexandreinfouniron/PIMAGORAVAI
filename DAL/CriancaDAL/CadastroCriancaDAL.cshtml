@@ -6,7 +6,7 @@
         var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
         <!--Dados da Criança-->
-        int idResponsavel = Request.Form["textCpf"].AsInt();
+        int idResponsavel = Request.Form["txtId"].AsInt();
         string cpfResponsavel = Request.Form["txtCpf"];
         string nome = Request.Form["textNome"];
         DateTime dataNascimento = Request.Form["dtNascimento"].AsDateTime();
