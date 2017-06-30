@@ -1,0 +1,20 @@
+﻿
+
+@{ 
+    if (IsPost)
+    {
+        var db = WebMatrix.Data.Database.Open("dbBancoPIM");
+
+        string usuario = Request.Form["textUsuario"];
+        string senha = Request.Form["textSenha"];
+
+
+        db.Execute("INSERT INTO Usuario (usuario, senha) VALUES(@0, @1)", usuario, senha);
+
+        db.Close();
+
+
+        Response.Redirect("~/Views/Conta/index.cshtml");
+
+    }
+    }

@@ -41,8 +41,13 @@
                                 <li class="divider"></li>
                                 <li><a href="~/Views/Sala/CadastrarSala.cshtml">Cadastrar Sala</a></li>
                                 <li><a href="~/Views/Turma/CadastrarTurma.cshtml">Cadastrar Turma</a></li>
-                                <li class="divider"></li>
-                                <li><a href="~/Views/Conta/CadastrarUsuarios.cshtml">Cadastrar Usuários</a></li>
+                                
+                                @if (Session["user"].ToString() == "admin")
+                                {
+                                    <li class="divider"></li>
+                                    <li><a href="~/Views/Conta/index.cshtml">Cadastrar Usuários</a></li>
+                                }
+                                
                             </ul>
                         </li>
                         <li>

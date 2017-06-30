@@ -1,0 +1,16 @@
+﻿@{ 
+
+    if (IsPost)
+    {
+        var db = WebMatrix.Data.Database.Open("dbBancoPIM");
+
+        int id = Request.Form["textid"].AsInt();
+
+        db.Execute("DELETE FROM Usuario WHERE id=@0", id);
+
+        db.Close();
+
+        Response.Redirect("~/Views/Conta/index.cshtml");
+    }
+    
+}

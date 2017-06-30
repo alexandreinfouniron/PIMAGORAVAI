@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var db = WebMatrix.Data.Database.Open("dbBancoPIM");
+    var usuario = db.Query(@"SELECT*FROM Usuario");
+    db.Close();
+
+
+}
+
+
+<h3 class="text-center"> Usuários </h3>
+<p></p><br />
+<button class="btn btn-success btn-adduser"><span class="glyphicon glyphicon-plus"></span>Adicionar</button>
+<p></p><br />
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Usuario</th>
+                    <th>senha</th>
+                    <th class="text-center">Deletar</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var c in usuario)
+                {
+                    <tr>
+                        <td>@c.id</td>
+                        <td>@c.usuario</td>
+                        <td>@c.senha</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-danger btn-excluir text-center" data-excluir="@c.id"><span class="glyphicon glyphicon-trash"></span> Excluir</button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="conteudoModal">
+                    <!--RenderModal-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btn-adduser").click(function () {
+                var id = $(this).data("value");
+                $("#conteudoModal").load("/Views/Conta/CadastrarUsuarios.cshtml",
+                    function () {
+                        $('#myModal').modal('show')
+                    });
+            });
+
+            $(".btn-excluir").click(function () {
+                var id = $(this).data("excluir");
+                $("#conteudoModal").load("/Views/Conta/DeleteUsuario.cshtml?id=" + id,
+                    function () {
+                        $('#myModal').modal('show')
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,11 @@
+﻿@{
+    int id = Request.QueryString["id"].AsInt();
+}
+
+<form method="post" action="~/DAL/ContaDAL/DeleteContaDAL.cshtml">
+    <input type="hidden" value="@id" name="textid" />
+    <h4>Deseja realmente excluir está Criança?</h4>
+    <p></p><br />
+    <button type="button" class="btn btn-lg btn-success" data-dismiss="modal">Não</button> | <input type="submit" class="btn btn-lg btn-danger" value="Sim" />
+    
+</form>
