@@ -1,0 +1,69 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    string mensagem = "";
+    if (IsPost)
+    {
+        string usuario = Request.Form["textUsuario"];
+        string senha = Request.Form["textSenha"];
+
+        var db = WebMatrix.Data.Database.Open("dbBancoPIM");
+
+        var res = db.QuerySingle("SELECT * FROM Usuario WHERE usuario = @0 AND senha = @1", usuario, senha);
+
+        if (res != null)
+        {
+            Session["user"] = res.usuario;
+
+            Response.Redirect("~/Index.cshtml");
+        }
+        else
+        {
+            mensagem = "Usuário ou senha inválidos";
+        }
+    }
+
+
+}
+
+
+<form method="post" action="">
+    <h2 class="text-center">Login</h2>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            @if (mensagem != "")
+            {
+                <div class="alert alert-warning">@mensagem</div>
+            }
+            <div class="form-group">
+                <label for="textUsuario">Usuario: </label>
+                <input type="text" name="textUsuario" id="nome" placeholder="Usuario" class="form-control" required />
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="textUsuario">Senha: </label>
+                <input type="password" name="textSenha" id="nome" placeholder="Senha" class="form-control" required />
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+            <div class="form-group right">
+                <input type="submit" value="Entrar" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    
+</form>

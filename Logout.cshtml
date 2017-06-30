@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        @{ 
+            Session.Abandon();
+
+            Response.Redirect("~/Index.cshtml");
+        }
+    </body>
+</html>
