@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var db = WebMatrix.Data.Database.Open("dbBancoPIM");
+
+    var idS = Request.QueryString["id"];
+
+    var sala = db.QuerySingle(@"SELECT s.idSala, c.nome 'nomeAluno', t.periodo 'periodo'
+                          FROM Sala s LEFT JOIN Crianca c
+                          ON s.idSala = c.idSala
+                          LEFT JOIN Turma t
+                          ON c.idTurma = t.idTurma
+                          WHERE s.idSala=@0", idS);
+
+    db.Close();
+
+}
+<hr />
+<h3 class="text -center"> Lista de Crianças </h3>
+<p></p><br />
+<hr />
+
+<form method="post" action="">
+    <div class="col-md-7">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Período</th>
+                    <th>Detalhes</th>
+                </tr>
+            </thead>
+            <tbody>
+                        @foreach (var s in sala)
+                        {
+                            <tr>
+                                <td>@s.nomeAluno</td>
+                                <td>@s.periodo</td>                                
+                            </tr>
+                        }
+            </tbody>
+        </table>
+    </div>
+</form>

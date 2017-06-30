@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var db = WebMatrix.Data.Database.Open("dbBancoPIM");
+
+    var sala = db.Query(@"SELECT s.idSala 'idS', s.nome 'nomeSala', count (c.idMatricula) 'qtde'
+                          FROM Sala s LEFT JOIN Crianca c 
+                          ON s.idSala = c.idSala 
+                          Group By s.nome, s.idSala");
+
+    db.Close();
+
+    bool buscando = false;
+}
+
+<h3 class="text -center"> Salas Cadastradas </h3>
+<p></p><br />
+<form method="post" action="">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-9">
+            <input type="text" name="txtBuscar" class="form-control" placeholder="Pesquisar..." />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-primary" value="Buscar" />
+        </div>
+    </div>
+    <p></p><br />
+    <hr />
+
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Sala</th>
+            <th>Qtde. Crianças</th>
+            <th>Detalhes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (IsPost)
+            {
+                var db2 = WebMatrix.Data.Database.Open("dbBancoPIM");
+                var texto = Request.Form["txtBuscar"];
+
+                var dados = db2.Query(@"SELECT s.idSala'idS', s.nome'nomeSala', count (c.idMatricula) 'qtde'
+                          FROM Sala s LEFT JOIN Crianca c 
+                          ON s.idSala = c.idSala 
+                          Group By s.nome, s.idSala");
+
+                db2.Close();
+
+                buscando = true;
+
+                if (buscando)
+                {
+                    foreach (var d in dados)
+                    {
+                        <tr>
+                            <td>@d.nomeSala</td>
+                            <td>@d.qtde</td>                            
+                        </tr>
+                    }
+                }
+            }
+            else
+            {
+                foreach (var s in sala)
+                {
+                    <tr>
+                        <td>@s.nomeSala</td>
+                        <td>@s.qtde</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+
+

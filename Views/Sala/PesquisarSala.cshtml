@@ -4,23 +4,22 @@
 @{
     var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
-    var sala = db.Query(@"SELECT s.idSala'idS', s.nome'nomeSala', c.nome 'nomeAluno', cd.nome'nomeCuidador'
-                          FROM Sala s LEFT JOIN Crianca c 
-                          ON s.idSala = c.idSala 
-                          LEFT JOIN Cuidador cd
-                          ON cd.idSala = s.idSala");
+    var sala = db.Query(@"SELECT s.idSala 'idS', s.nome 'nomeSala', count (c.idMatricula) 'qtde'
+                          FROM Sala s LEFT JOIN Crianca c
+                          ON s.idSala = c.idSala
+                          Group By s.nome, s.idSala");
 
     db.Close();
 
     bool buscando = false;
 }
 
-<h3 class="text-center"> Responsáveis Cadastrados </h3>
+<h3 class="text -center"> Salas Cadastradas </h3>
 <p></p><br />
 <form method="post" action="">
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-9">
+        <div class="col-md-5">
             <input type="text" name="txtBuscar" class="form-control" placeholder="Pesquisar..." />
         </div>
         <div class="col-md-2">
@@ -29,60 +28,60 @@
     </div>
     <p></p><br />
     <hr />
-</form>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Sala</th>
-            <th>Aluno</th>
-            <th>Cuidador</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            if (IsPost)
-            {
-                var db2 = WebMatrix.Data.Database.Open("dbBancoPIM");
-                var texto = Request.Form["txtBuscar"];
-
-                var dados = db2.Query(@"SELECT s.idSala'idS', s.nome'nomeSala', c.nome 'nomeAluno', cd.nome'nomeCuidador'
-                          FROM Sala s LEFT JOIN Crianca c 
-                          ON s.idSala = c.idSala 
-                          LEFT JOIN Cuidador cd
-                          ON cd.idSala = s.idSala
-                          WHERE s.nome LIKE @0", "%" + texto + "%");
-
-                db2.Close();
-
-                buscando = true;
-
-                if (buscando)
+<div class="col-md-7">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sala</th>
+                <th>Qtde. Crianças</th>
+                <th>Detalhes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (IsPost)
                 {
-                    foreach (var d in dados)
+                    var db2 = WebMatrix.Data.Database.Open("dbBancoPIM");
+                    var texto = Request.Form["txtBuscar"];
+
+                    var dados = db2.Query(@"SELECT s.idSala'idS', s.nome'nomeSala', count (c.idMatricula) 'qtde'
+                          FROM Sala s LEFT JOIN Crianca c
+                          ON s.idSala = c.idSala
+                          Group By s.nome, s.idSala");
+
+                    db2.Close();
+
+                    buscando = true;
+
+                    if (buscando)
+                    {
+                        foreach (var d in dados)
+                        {
+                            <tr>
+                                <td>@d.nomeSala</td>
+                                <td>@d.qtde</td>
+                                <td class="text-center">
+                                    <a href="/Views/Sala/ListaCriancaSala.cshtml?id=@d.idS" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> Detalhes</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var s in sala)
                     {
                         <tr>
-                            <td>@d.nomeSala</td>
-                            <td>@d.nomeAluno</td>                            
-                            <td>@d.nomeCuidador</td>
+                            <td>@s.nomeSala</td>
+                            <td>@s.qtde</td>
+                            <td class="text-center">
+                                <a href="/Views/Sala/ListaCriancaSala.cshtml?id=@s.idS" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> Detalhes</a>
+                            </td>
                         </tr>
                     }
                 }
             }
-            else
-            {
-                foreach (var s in sala)
-                {
-                    <tr>
-                        <td>@s.nomeSala</td>
-                        <td>@s.nomeAluno</td>                        
-                        <td>@s.nomeCuidador</td>
-                    </tr>
-                }
-            }
-        }
-    </tbody>
-</table>
-
-
-
+        </tbody>
+    </table>
+</div>
+</form>
