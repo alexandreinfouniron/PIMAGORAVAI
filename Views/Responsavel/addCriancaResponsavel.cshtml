@@ -20,7 +20,7 @@
     var r = db.QuerySingle("SELECT*FROM Responsavel WHERE cpf = @0", cpf);
     var c = db.Query(@"SELECT c.nome 'nomeCrianca', c.idMatricula 'matricula'
                     FROM Crianca c inner join Responsavel r
-                    ON c.cpfResponsavel = r.cpf
+                    ON c.idResponsavel = r.id
                     WHERE r.cpf = @0", cpf);
 
     db.Close();
@@ -51,7 +51,7 @@
         </div>
     </div>
 </form>
-<button class="btn btn-success btnAddCrianca" data-cpf="@r.cpf"><span class="glyphicon glyphicon-plus"></span> Adicionar Criança</button>
+<button class="btn btn-success btnAddCrianca" data-id="@r.id" data-cpf="@r.cpf"><span class="glyphicon glyphicon-plus"></span> Adicionar Criança</button>
 <hr />
 <div class="col-md-6">
     <table class="table table-condensed table-hover">
@@ -97,8 +97,9 @@
       
             
             $(".btnAddCrianca").click(function () {
-                var id = $(this).data("cpf");
-                $("#conteudoModal").load("/Views/Crianca/CadastrarCrianca.cshtml?id=" + id,
+                var id = $(this).data("id");
+                var cpf = $(this).data("cpf");
+                $("#conteudoModal").load("/Views/Crianca/CadastrarCrianca.cshtml?id=" + id + "&cpf=" + cpf,
                     function () {
                         $('#myModal').modal('show')
                     });

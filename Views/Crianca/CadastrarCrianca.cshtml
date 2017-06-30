@@ -20,6 +20,7 @@
 
 @{
     var cpfquery = Request.QueryString["id"];
+    var cpf = Request.QueryString["cpf"];
 
     if (IsPost && Validation.IsValid())
     {
@@ -36,7 +37,7 @@
         decimal idSala = Request.Form["sSala"].AsDecimal();
         
 
-        dbV.Execute("INSERT INTO Crianca (nome, sexo, dtNascimento, dtMatricula, observacoes, idTurma, idSala, cpfResponsavel) VALUES(@0, @1, @2, @3, @4, @5, @6, @7)", nome, sexo, dataNascimento, dataMatricula, observacoes, idTurma, idSala, cpfResponsavel);
+        dbV.Execute("INSERT INTO Crianca (nome, sexo, dtNascimento, dtMatricula, observacoes, idTurma, idSala, idResponsavel) VALUES(@0, @1, @2, @3, @4, @5, @6, @7)", nome, sexo, dataNascimento, dataMatricula, observacoes, idTurma, idSala, cpfResponsavel);
 
         dbV.Close();
     }
@@ -51,6 +52,7 @@
     <div class="row">
     </div>
     <input type="text" value="@cpfquery" name="textCpf" />
+    <input type="text" value="@cpf" name="txtCpf" />
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">

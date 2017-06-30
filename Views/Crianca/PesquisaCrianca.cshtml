@@ -5,7 +5,7 @@
     var db = WebMatrix.Data.Database.Open("dbBancoPIM");
     var crianca = db.Query(@"SELECT c.idMatricula 'Matricula', c.dtNascimento 'dtNasc' , c.dtMatricula 'dtMatricula', r.nome 'nomeResp', c.nome 'nomeCrianca', s.nome 'nomeSala', t.periodo 'nomePeriodo', c.sexo 'sexo', c.Observacoes 'obs'
                              FROM Crianca c LEFT JOIN Responsavel r
-                             ON c.cpfResponsavel = r.cpf LEFT JOIN Sala s
+                             ON c.idResponsavel = r.id LEFT JOIN Sala s
                              ON c.idSala = s.idSala LEFT JOIN Turma t
                              ON c.idTurma = t.idTurma");
     db.Close();
@@ -50,7 +50,7 @@
 
                 var dados = db2.Query(@"select c.idMatricula 'Matricula', c.dtNascimento 'dtNasc' , c.dtMatricula 'dtMatricula', r.nome 'nomeResp', c.nome 'nomeCrianca', s.nome 'nomeSala', t.periodo 'nomePeriodo', c.sexo 'sexo', c.Observacoes 'obs'
                              from Crianca c left join Responsavel r
-                             on c.cpfResponsavel = r.cpf left join Sala s
+                             on c.idResponsavel = r.id left join Sala s
                              on c.idSala = s.idSala left join Turma t
                              on c.idTurma = t.idTurma WHERE c.nome LIKE @0", "%" + texto + "%");
 
