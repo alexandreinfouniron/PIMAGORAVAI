@@ -5,8 +5,9 @@
     var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
     var idS = Request.QueryString["id"];
+    int qtde = Request.QueryString["qtd"].AsInt();
 
-    var sala = db.QuerySingle(@"SELECT s.idSala, c.nome 'nomeAluno', t.periodo 'periodo'
+    var sala = db.Query(@"SELECT s.idSala, c.idMatricula 'Matricula', c.nome 'nomeAluno', t.periodo 'periodo'
                           FROM Sala s LEFT JOIN Crianca c
                           ON s.idSala = c.idSala
                           LEFT JOIN Turma t
@@ -14,6 +15,8 @@
                           WHERE s.idSala=@0", idS);
 
     db.Close();
+
+    bool verificacao = false;
 
 }
 <hr />
@@ -28,18 +31,77 @@
                 <tr>
                     <th>Nome</th>
                     <th>Período</th>
-                    <th>Detalhes</th>
+                    <th class="text-center">Detalhes</th>
                 </tr>
             </thead>
             <tbody>
-                        @foreach (var s in sala)
+                @if (qtde > 0)
+                {
+                    var dbS = WebMatrix.Data.Database.Open("dbBancoPIM");
+
+                    var dados = dbS.Query(@"SELECT s.idSala, c.idMatricula 'Matricula', c.nome 'nomeAluno', t.periodo 'periodo'
+                          FROM Sala s LEFT JOIN Crianca c
+                          ON s.idSala = c.idSala
+                          LEFT JOIN Turma t
+                          ON c.idTurma = t.idTurma
+                          WHERE s.idSala=@0", idS);
+
+                    dbS.Close();
+
+                    verificacao = true;
+
+                    if (verificacao)
+                    {
+                        foreach (var s in dados)
                         {
+
                             <tr>
                                 <td>@s.nomeAluno</td>
-                                <td>@s.periodo</td>                                
+                                <td>@s.periodo</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-primary btnDetalhes text-center" data-value="@s.Matricula"><span class="glyphicon glyphicon glyphicon-list-alt"></span> Ficha</button>
+                                </td>
                             </tr>
                         }
+                    }
+
+                }
+                else
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </form>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="conteudoModal">
+                    <!--RenderModal-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btnDetalhes").click(function () {
+                var id = $(this).data("value");
+                $("#conteudoModal").load("/Views/Crianca/FichaCrianca.cshtml?matricula=" + id,
+                    function () {
+                        $('#myModal').modal('show')
+                    });
+            });
+        });
+    </script>
+}
