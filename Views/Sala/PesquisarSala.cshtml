@@ -1,5 +1,88 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
-<p>Cadastrar Cuidado</p>
+    var sala = db.Query(@"SELECT s.idSala'idS', s.nome'nomeSala', c.nome 'nomeAluno', cd.nome'nomeCuidador'
+                          FROM Sala s LEFT JOIN Crianca c 
+                          ON s.idSala = c.idSala 
+                          LEFT JOIN Cuidador cd
+                          ON cd.idSala = s.idSala");
+
+    db.Close();
+
+    bool buscando = false;
+}
+
+<h3 class="text-center"> Responsáveis Cadastrados </h3>
+<p></p><br />
+<form method="post" action="">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-9">
+            <input type="text" name="txtBuscar" class="form-control" placeholder="Pesquisar..." />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-primary" value="Buscar" />
+        </div>
+    </div>
+    <p></p><br />
+    <hr />
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Sala</th>
+            <th>Aluno</th>
+            <th>Cuidador</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (IsPost)
+            {
+                var db2 = WebMatrix.Data.Database.Open("dbBancoPIM");
+                var texto = Request.Form["txtBuscar"];
+
+                var dados = db2.Query(@"SELECT s.idSala'idS', s.nome'nomeSala', c.nome 'nomeAluno', cd.nome'nomeCuidador'
+                          FROM Sala s LEFT JOIN Crianca c 
+                          ON s.idSala = c.idSala 
+                          LEFT JOIN Cuidador cd
+                          ON cd.idSala = s.idSala
+                          WHERE s.nome LIKE @0", "%" + texto + "%");
+
+                db2.Close();
+
+                buscando = true;
+
+                if (buscando)
+                {
+                    foreach (var d in dados)
+                    {
+                        <tr>
+                            <td>@d.nomeSala</td>
+                            <td>@d.nomeAluno</td>                            
+                            <td>@d.nomeCuidador</td>
+                        </tr>
+                    }
+                }
+            }
+            else
+            {
+                foreach (var s in sala)
+                {
+                    <tr>
+                        <td>@s.nomeSala</td>
+                        <td>@s.nomeAluno</td>                        
+                        <td>@s.nomeCuidador</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+
+
