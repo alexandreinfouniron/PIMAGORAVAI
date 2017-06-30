@@ -18,7 +18,7 @@
     dbX.Close();
 }
 
-@{ 
+@{
     if (IsPost && Validation.IsValid())
     {
         var db = WebMatrix.Data.Database.Open("dbBancoPIM");
@@ -29,6 +29,8 @@
         DateTime dataNascimento = Request.Form["dtNascimento"].AsDateTime();
         string sexo = Request.Form["opRadio"];
         string endereco = Request.Form["textEndereco"];
+        int numero = Request.Form["numero"].AsInt();
+        string bairro = Request.Form["txtBairro"];
         string telefone1 = Request.Form["tel1"];
         string telefone2 = Request.Form["tel2"];
         string email = Request.Form["email"];
@@ -38,8 +40,8 @@
 
 
         <!--Pesquisar sobre validação de formulario-->
-        db.Execute("INSERT INTO Cuidador (cpf, nome, endereco, sexo, telefone1, telefone2, email, dtNascimento, dtAdmissao, idTurma, idSala)" +
-            " VALUES(@0, @1, @2, @3, @4, @5, @6, @7, @8, @9, @10)", cpf, nome, endereco, sexo, telefone1, telefone2, email, dataNascimento, dtAdmissao, idTurma, idSala);
+        db.Execute("INSERT INTO Cuidador (cpf, nome, endereco, bairro, numero, sexo, telefone1, telefone2, email, dtNascimento, dtAdmissao, idTurma, idSala)" +
+            " VALUES(@0, @1, @2, @3, @4, @5, @6, @7, @8, @9, @10, @11, @12)", cpf, nome, endereco, bairro, numero, sexo, telefone1, telefone2, email, dataNascimento, dtAdmissao, idTurma, idSala);
 
         db.Close();
 
@@ -50,7 +52,8 @@
     }
     else
     {
-        <form method="post" action="">
+
+    <form method="post" action="">
             <h3 class="text-primary">Cadastro do Cuidador</h3>
             <hr />
             <!--Dados do Cuidador-->
@@ -100,13 +103,27 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="txtNum">Nº: </label>
+                    <input type="number" name="numero" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtBairro">Bairro: </label>
+                        <input type="text" name="txtBairro" class="form-control" />
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="tel">Telefone 1: </label>
-                        <input type="tel" name="tel1" id="tel" class="form-control" />   
+                        <input type="tel" name="tel1" id="tel" class="form-control" />
                         @Html.ValidationMessage("tel1")
-                    </div>                    
+                    </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
@@ -148,7 +165,7 @@
                     </div>
                 </div>
             </div>
-            <a href="~/Index.cshtml" class="btn btn-danger">Cancelar</a> | <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <a href="~/Index.cshtml" class="btn btn-danger">Cancelar</a> | <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     }
 

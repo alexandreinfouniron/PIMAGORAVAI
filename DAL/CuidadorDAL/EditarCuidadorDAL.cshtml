@@ -7,7 +7,6 @@
         {
             var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
-
             string cpfCuidador = Request.Form["textCpf"];
             string nomeCuidador = Request.Form["textNomeCuidador"];
             DateTime dtNascCuidador = Request.Form["dtNascimento"].AsDateTime();
@@ -22,7 +21,7 @@
             int idTurma = Request.Form["sTurma"].AsInt();
             int idSala = Request.Form["sSala"].AsInt();
 
-            db.Execute(@"UPDATE Cuidador SET nome=@0, endereco=@1, numero=@2, bairro=@3, sexo=@4, telefone1=@5, telefone2=@6, email=@7, dtNascimento=@8, dtAdmissao=@9, idTurma=@10, idSala=@11  WHERE cpf=@12", nomeCuidador, dtNascCuidador, dtAdmissao, sexoCuidador, endereco, numero, bairro, telefone1, telefone2, email, idSala, idTurma, cpfCuidador);
+            db.Execute(@"UPDATE Cuidador SET nome=@0, endereco=@1, numero=@2, bairro=@3, sexo=@4, telefone1=@5, telefone2=@6, email=@7, dtNascimento=@8, dtAdmissao=@9, idTurma=@10, idSala=@11  WHERE cpf=@12 ", nomeCuidador, dtNascCuidador, dtAdmissao, sexoCuidador, endereco, numero, bairro, telefone1, telefone2, email, idSala, idTurma, cpfCuidador);
 
             Response.Redirect("~/Views/Cuidador/PesquisarCuidador.cshtml");
 

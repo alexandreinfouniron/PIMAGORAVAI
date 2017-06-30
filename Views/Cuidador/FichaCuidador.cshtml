@@ -9,14 +9,13 @@
     var db = WebMatrix.Data.Database.Open("dbBancoPIM");
 
     var idCuidador = Request.QueryString["cpf"];
-    //bool fichaVal = Request.QueryString["fichaVal"].AsBool();
 
     if (idCuidador == null)
     {
         Response.Redirect("~/Index.cshtml");
     }
 
-    var c = db.QuerySingle(@" SELECT c.cpf 'cpfCuidador', c.nome 'nomeCuidador', c.endereco 'endCuidador', c.numero 'numCasaCuidador', c.bairro 'bairroCuidador', c.sexo 'sexo', c.telefone1 'tel1Cuidador', c.telefone2 'tel2Cuidador', c.email 'emailCuidador', c.dtNascimento 'dtNascCuidador', c.dtAdmissao 'dtAdmissao', s.nome 'nomeSala', c.idSala 'idSala', t.periodo 'nomePeriodo', c.idTurma 'idTurma'
+    var c = db.QuerySingle(@" SELECT c.ID 'idC', c.cpf 'cpfCuidador', c.nome 'nomeCuidador', c.endereco 'endCuidador', c.numero 'numCasaCuidador', c.bairro 'bairroCuidador', c.sexo 'sexo', c.telefone1 'tel1Cuidador', c.telefone2 'tel2Cuidador', c.email 'emailCuidador', c.dtNascimento 'dtNascCuidador', c.dtAdmissao 'dtAdmissao', s.nome 'nomeSala', c.idSala 'idSala', t.periodo 'nomePeriodo', c.idTurma 'idTurma'
 FROM Cuidador c LEFT JOIN Sala s 
 on c.idSala = s.idSala LEFT JOIN Turma t
 on c.idTurma = t.idTurma WHERE c.cpf=@0", idCuidador);
